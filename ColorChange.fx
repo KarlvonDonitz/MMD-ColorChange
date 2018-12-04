@@ -10,6 +10,7 @@ float Script : STANDARDSGLOBAL <
 
 
 float2 ViewportSize : VIEWPORTPIXELSIZE;
+float Transparent : CONTROLOBJECT < string name = "(self)"; string item = "Tr"; >;
 
 static float2 ViewportOffset = (float2(0.5,0.5)/ViewportSize);
 float4   MaterialDiffuse   : DIFFUSE  < string Object = "Geometry"; >;
@@ -73,15 +74,17 @@ VS_OUTPUT VS_passMain( float4 Pos : POSITION, float4 Tex : TEXCOORD0 ){
 float4 PS_passMain(float2 Tex: TEXCOORD0) : COLOR
 {   
     float4 Color = 1;
+	float4 ColorSamp=1;
 	float4 ScnColor = tex2D(ScnSamp,Tex);
     float EdgeSamp= tex2D(EdgeView,Tex);
 	Color = float4(0,0,0,1);
 	if (EdgeSamp == 1) {
-	Color = ScnColor;
+	ColorSamp = ScnColor;
 	} else {
-	Color = ScnColor.r*0.3+ScnColor.g*0.59+ScnColor.b*0.11;
+	ColorSamp = ScnColor.r*0.3+ScnColor.g*0.59+ScnColor.b*0.11;
 	
 	}
+	Color= ColorSamp*Transparent+ScnColor*(1-Transparent);
     return Color;
 }
 

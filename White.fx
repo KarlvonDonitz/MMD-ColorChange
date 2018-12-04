@@ -88,7 +88,10 @@ VS_OUTPUT1 Basic_VS( float4 Pos : POSITION , float3 Normal : NORMAL, float2 Tex 
 float4 Basic_PS( float2 Tex : TEXCOORD1, float3 Normal : TEXCOORD2, float3 Eye : TEXCOORD3 , float3 SpTex      : TEXCOORD4 ) : COLOR0
 {
 float4 Color = 1;
-	return Color;
+ float4 BasicColor=tex2D(ObjTexSampler,Tex);
+ BasicColor.rgb = 1;
+ if (BasicColor.a==0) BasicColor = 0;
+	return BasicColor;
 }
 
 

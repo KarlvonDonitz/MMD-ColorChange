@@ -40,13 +40,13 @@ texture2D DepthBuffer : RENDERDEPTHSTENCILTARGET <
     string Format = "D24S8";
 >;
 
-texture EdgeRT: OFFSCREENRENDERTARGET <
-   
+texture ColorMask: OFFSCREENRENDERTARGET <
+    string Description = "Color Mask for ColorChange.fx";
     float4 ClearColor = { 0, 0, 0, 0 };
     float ClearDepth = 1.0;
     bool AntiAlias = 1;
     string DefaultEffect = 
-        "* = White.fx";
+        "* = OFF.fx";
 >;
 
 struct VS_OUTPUT {
@@ -56,8 +56,8 @@ struct VS_OUTPUT {
 
 
 
-sampler EdgeView = sampler_state {
-    texture = <EdgeRT>;
+sampler Mask = sampler_state {
+    texture = <ColorMask>;
     AddressU  = CLAMP;
     AddressV = CLAMP;
     Filter = NONE;
@@ -76,7 +76,7 @@ float4 PS_passMain(float2 Tex: TEXCOORD0) : COLOR
     float4 Color = 1;
 	float4 ColorSamp=1;
 	float4 ScnColor = tex2D(ScnSamp,Tex);
-    float EdgeSamp= tex2D(EdgeView,Tex);
+    float EdgeSamp= tex2D(Mask,Tex);
 	Color = float4(0,0,0,1);
 	if (EdgeSamp == 1) {
 	ColorSamp = ScnColor;

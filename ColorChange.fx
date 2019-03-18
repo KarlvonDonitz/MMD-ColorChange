@@ -82,7 +82,6 @@ float4 PS_passMain(float2 Tex: TEXCOORD0) : COLOR
 	ColorSamp = ScnColor;
 	} else {
 	ColorSamp = ScnColor.r*0.3+ScnColor.g*0.59+ScnColor.b*0.11;
-	
 	}
 	Color= ColorSamp*Transparent+ScnColor*(1-Transparent);
     return Color;
